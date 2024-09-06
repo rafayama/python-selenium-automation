@@ -23,9 +23,9 @@ driver.maximize_window()
 # # Continue button
 # driver.find_element(By.XPATH, "//input[@aria-labelledby='continue-announce']")
 # # Conditions of use link
-# driver.find_element(By.XPATH, "//a[@href='/gp/help/customer/display.html/ref=ap_signin_notification_condition_of_use?ie=UTF8&amp;nodeId=508088']")
+# driver.find_element(By.XPATH, "//a[contains(@href, 'ap_signin_notification_condition_of_use']")
 # # Privacy Notice link
-# driver.find_element(By.XPATH, "//a[@href='/gp/help/customer/display.html/ref=ap_signin_notification_privacy_notice?ie=UTF8&amp;nodeId=468496']")
+# driver.find_element(By.XPATH, "//a[contains(@href, 'ap_signin_notification_privacy_notice']")
 # # Need help link
 # driver.find_element(By.XPATH, "//a[@data-action='a-expander-toggle']")
 # # Forgot your password link
