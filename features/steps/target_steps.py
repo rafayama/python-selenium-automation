@@ -10,6 +10,18 @@ def open_main(context):
     context.driver.get('https://www.target.com/')
 
 
+@given('Open Target Circle page')
+def open_target_circle(context):
+    context.driver.get('https://www.target.com/l/target-circle/-/N-pzno9')
+    sleep(5)
+
+
+@given('Open Target Help page')
+def open_target_circle(context):
+    context.driver.get(' https://help.target.com/help ')
+    sleep(5)
+
+
 @when('Search for {product}')
 def search_for_product(context, product):
     # add tea to search field
@@ -58,6 +70,7 @@ def verify_sign_in_form(context):
     context.driver.find_element(By.XPATH, "//h1//span[text()='Sign into your Target account']").click()
     context.driver.find_element(By.XPATH, "//form")
 
+
 @then('Verify that header has {expected_amount} links')
 def verify_header_links(context, expected_amount):
     expected_amount = int(expected_amount)
@@ -65,11 +78,72 @@ def verify_header_links(context, expected_amount):
     print(links)
     assert len(links) == expected_amount, f'Expected {expected_amount} links, got {len(links)}'
 
+
 @then('Verify that header is shown')
 def verify_header(context):
     context.driver.find_element(By.CSS_SELECTOR, '[class*="utilityHeaderContainer"]')
+
 
 @then('Verify that header has links')
 def verify_header_links_shown(context):
     links = context.driver.find_elements(By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader/']")
     assert len(links) > 0
+
+
+@then('Verify that there are {benefit_cells} benefit cells')
+def verify_benefit_cells(context, benefit_cells):
+    main_cells = context.driver.find_elements(By.CSS_SELECTOR, "[data-test='@web/slingshot-components/CellsComponent/Link']")
+
+    assert len(main_cells) == int(benefit_cells)
+
+
+@then('Click on product image')
+def click_product(context):
+    context.driver.find_element(By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductCardImage']").click()
+    sleep(5)
+
+
+@then('Click on Add to Cart button')
+def click_add_to_cart_sidebar(context):
+    context.driver.find_element(By.CSS_SELECTOR, "[data-test='orderPickupButton']").click()
+    sleep(5)
+
+
+@then('Verify that cart has items')
+def verify_item(context):
+    context.driver.get('https://www.target.com/cart')
+    sleep(5)
+    cart_item = context.driver.find_elements(By.CSS_SELECTOR, "[data-test='cartItem']")
+    assert len(cart_item) > 0
+
+
+@then('Verify that Help Title is shown')
+def verify_help_title(context):
+    # context.driver.find_element(By.XPATH, "//h2[text()='Target Help']")
+    context.driver.find_element(By.CSS_SELECTOR, ".bio h2")
+
+@then('Verify that Help search field is shown')
+def verify_search_field(context):
+    context.driver.find_element(By.XPATH, "//input[@placeholder='search help']")
+
+
+@then('Verify that Help search icon is shown')
+def verify_search_field(context):
+    context.driver.find_element(By.CSS_SELECTOR, ".search-btn")
+
+
+@then('Verify that there are {boxes} boxes in the What would you like to do')
+def verify_boxes(context, boxes):
+    amount = context.driver.find_elements(By.CSS_SELECTOR, '.col-lg-12 .grid_6')
+    assert len(amount) == int(boxes), f'Expected {boxes} boxes, got {len(amount)}'
+
+
+@then('Verify that there are {boxes} boxes under')
+def verify_boxes_under(context, boxes):
+    amount = context.driver.find_elements(By.CSS_SELECTOR, '.grid_4')
+    assert len(amount) == int(boxes)
+
+
+@then('Verify that Browse all Help pages title is shown')
+def verify_browse_all_help_title(context):
+    context.driver.find_element(By.XPATH, "//h2[text()='Browse all Help pages']")
