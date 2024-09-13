@@ -3,7 +3,12 @@ from lib2to3.fixes.fix_input import context
 from selenium.webdriver.common.by import By
 from behave import given, when, then
 from time import sleep
+from selenium.webdriver.support import expected_conditions as EC
 
+ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[id*='addToCart']")
+LISTING_PRODUCT = (By.CSS_SELECTOR, "[data-test='@web/site-top-of-funnel/ProductCardWrapper']")
+LISTING_PRODUCT_TITLE = (By.CSS_SELECTOR, "[data-test='product-title']")
+LISTING_PRODUCT_IMAGE = (By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductCardImage/primary'] img")
 
 @given('Open target main page')
 def open_main(context):
@@ -13,13 +18,11 @@ def open_main(context):
 @given('Open Target Circle page')
 def open_target_circle(context):
     context.driver.get('https://www.target.com/l/target-circle/-/N-pzno9')
-    sleep(5)
 
 
 @given('Open Target Help page')
 def open_target_circle(context):
     context.driver.get(' https://help.target.com/help ')
-    sleep(5)
 
 
 @when('Search for {product}')
@@ -28,7 +31,6 @@ def search_for_product(context, product):
     context.driver.find_element(By.ID, 'search').send_keys(product)
     # Search button > click
     context.driver.find_element(By.XPATH, "//button[@data-test='@web/Search/SearchButton']").click()
-    sleep(5)
 
 
 @then('Verify that correct search results shown for {product}')
@@ -43,7 +45,6 @@ def verify_results(context, product):
 @when('Click on Cart icon')
 def click_cart(context):
     context.driver.find_element(By.XPATH, "//a[@data-test='@web/CartLink']").click()
-    sleep(5)
 
 
 @then('Verify that your cart is empty message is shown')
@@ -56,13 +57,11 @@ def verify_cart_empty(context):
 @when('Click Sign in')
 def click_sign_in(context):
     context.driver.find_element(By.XPATH, "//a[@data-test='@web/AccountLink']").click()
-    sleep(2)
 
 
 @when('From right side navigation menu, click Sign In')
 def click_sign_in_sidebar(context):
     context.driver.find_element(By.XPATH, "//a[@data-test='accountNav-signIn']").click()
-    sleep(5)
 
 
 @then('Verify Sign In form opened')
@@ -97,22 +96,24 @@ def verify_benefit_cells(context, benefit_cells):
     assert len(main_cells) == int(benefit_cells)
 
 
-@then('Click on product image')
+@when('Click on product image')
 def click_product(context):
     context.driver.find_element(By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductCardImage']").click()
     sleep(5)
 
 
-@then('Click on Add to Cart button')
-def click_add_to_cart_sidebar(context):
-    context.driver.find_element(By.CSS_SELECTOR, "[data-test='orderPickupButton']").click()
+@when('Click on Add to Cart button')
+def click_add_to_cart(context):
+    context.driver.find_element(*ADD_TO_CART_BTN).click()
     sleep(5)
+    # Waits for target element to be loaded
+    # context.driver.wait.until(EC.visibility_of_element_located(ADD_TO_CART_BTN))
 
 
 @then('Verify that cart has items')
 def verify_item(context):
     context.driver.get('https://www.target.com/cart')
-    sleep(5)
+    # sleep(5)
     cart_item = context.driver.find_elements(By.CSS_SELECTOR, "[data-test='cartItem']")
     assert len(cart_item) > 0
 
@@ -121,6 +122,7 @@ def verify_item(context):
 def verify_help_title(context):
     # context.driver.find_element(By.XPATH, "//h2[text()='Target Help']")
     context.driver.find_element(By.CSS_SELECTOR, ".bio h2")
+
 
 @then('Verify that Help search field is shown')
 def verify_search_field(context):
@@ -147,3 +149,16 @@ def verify_boxes_under(context, boxes):
 @then('Verify that Browse all Help pages title is shown')
 def verify_browse_all_help_title(context):
     context.driver.find_element(By.XPATH, "//h2[text()='Browse all Help pages']")
+
+
+@then('Verify that each result has a name and image')
+def verify_result_name(context):
+
+    results = context.driver.find_elements(*LISTING_PRODUCT)
+    amount_of_results = len(results)
+    print(amount_of_results)
+    for result in results:
+        title = context.driver.find_element(*LISTING_PRODUCT_TITLE)
+        print(title)
+        img = context.driver.find_element(*LISTING_PRODUCT_IMAGE)
+        print(img)
