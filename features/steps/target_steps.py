@@ -12,8 +12,8 @@ LISTING_PRODUCT_IMAGE = (By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductC
 
 @given('Open target main page')
 def open_main(context):
-    context.driver.get('https://www.target.com/')
-
+    # context.driver.get('https://www.target.com/')
+    context.app.main_page.open_main()
 
 @given('Open Target Circle page')
 def open_target_circle(context):
@@ -27,19 +27,18 @@ def open_target_circle(context):
 
 @when('Search for {product}')
 def search_for_product(context, product):
-    # add tea to search field
-    context.driver.find_element(By.ID, 'search').send_keys(product)
-    # Search button > click
-    context.driver.find_element(By.XPATH, "//button[@data-test='@web/Search/SearchButton']").click()
-
+    # # add tea to search field
+    # context.driver.find_element(By.ID, 'search').send_keys(product)
+    # # Search button > click
+    # context.driver.find_element(By.XPATH, "//button[@data-test='@web/Search/SearchButton']").click()
+    context.app.header.search_product(product)
 
 @then('Verify that correct search results shown for {product}')
 def verify_results(context, product):
-    actual_result = context.driver.find_element(By.XPATH, "//div[@data-test='resultsHeading']").text
-    # expected_result = 'teafasfa'  # incorrect string
-
-    assert product in actual_result, f'Expected {product} but got {actual_result}'
-
+    # actual_result = context.driver.find_element(By.XPATH, "//div[@data-test='resultsHeading']").text
+    # # expected_result = 'teafasfa'  # incorrect string
+    # assert product in actual_result, f'Expected {product} but got {actual_result}'
+    context.app.search_results_page.verify_results(product)
 
 # lesson 3 homework exercise 2
 @when('Click on Cart icon')
@@ -153,12 +152,16 @@ def verify_browse_all_help_title(context):
 
 @then('Verify that each result has a name and image')
 def verify_result_name(context):
+    # to see all listings
+    context.driver.execute_script("window.scrollBy(0, 2000)", "")
+    sleep(4)
+    context.driver.execute_script("window.scrollBy(0, 2000)", "")
 
     results = context.driver.find_elements(*LISTING_PRODUCT)
     amount_of_results = len(results)
     print(amount_of_results)
     for result in results:
-        title = context.driver.find_element(*LISTING_PRODUCT_TITLE)
+        title = result.find_element(*LISTING_PRODUCT_TITLE).text
+        assert title != ''
         print(title)
-        img = context.driver.find_element(*LISTING_PRODUCT_IMAGE)
-        print(img)
+        img = result.find_element(*LISTING_PRODUCT_IMAGE)
