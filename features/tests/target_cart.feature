@@ -8,3 +8,7 @@ Feature: Tests for Target Cart
     And Click on Add to Cart button
     Then Verify that cart has items
 
+  Scenario: Verify that cart is empty
+    Given Open target main page
+    When Click on Cart icon
+    Then Verify that "Your cart is empty" is shown

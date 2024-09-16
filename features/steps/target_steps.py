@@ -1,5 +1,3 @@
-from lib2to3.fixes.fix_input import context
-
 from selenium.webdriver.common.by import By
 from behave import given, when, then
 from time import sleep
@@ -9,6 +7,7 @@ ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[id*='addToCart']")
 LISTING_PRODUCT = (By.CSS_SELECTOR, "[data-test='@web/site-top-of-funnel/ProductCardWrapper']")
 LISTING_PRODUCT_TITLE = (By.CSS_SELECTOR, "[data-test='product-title']")
 LISTING_PRODUCT_IMAGE = (By.CSS_SELECTOR, "[data-test='@web/ProductCard/ProductCardImage/primary'] img")
+EMPTY_CART_TEXT = (By.XPATH, "//h1[text()='Your cart is empty']")
 
 @given('Open target main page')
 def open_main(context):
@@ -44,6 +43,7 @@ def verify_results(context, product):
 @when('Click on Cart icon')
 def click_cart(context):
     context.driver.find_element(By.XPATH, "//a[@data-test='@web/CartLink']").click()
+    sleep(2)
 
 
 @then('Verify that your cart is empty message is shown')
@@ -164,4 +164,9 @@ def verify_result_name(context):
         title = result.find_element(*LISTING_PRODUCT_TITLE).text
         assert title != ''
         print(title)
-        img = result.find_element(*LISTING_PRODUCT_IMAGE)
+        result.find_element(*LISTING_PRODUCT_IMAGE)
+
+@then('Verify that "Your cart is empty" is shown')
+def verify_cart_empty(context):
+    # context.driver.find_element(*EMPTY_CART_TEXT)
+    context.app.cart_page.verify_empty()
