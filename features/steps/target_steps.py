@@ -1,3 +1,5 @@
+from lib2to3.fixes.fix_input import context
+
 from selenium.webdriver.common.by import By
 from behave import given, when, then
 from time import sleep
@@ -32,6 +34,7 @@ def search_for_product(context, product):
     # context.driver.find_element(By.XPATH, "//button[@data-test='@web/Search/SearchButton']").click()
     context.app.header.search_product(product)
 
+
 @then('Verify that correct search results shown for {product}')
 def verify_results(context, product):
     # actual_result = context.driver.find_element(By.XPATH, "//div[@data-test='resultsHeading']").text
@@ -39,11 +42,17 @@ def verify_results(context, product):
     # assert product in actual_result, f'Expected {product} but got {actual_result}'
     context.app.search_results_page.verify_results(product)
 
+
+@then('Verify search product {product} in URL')
+def verify_results_url(context, product):
+    context.app.search_results_page.verify_results_url(product)
+
+
 # lesson 3 homework exercise 2
 @when('Click on Cart icon')
 def click_cart(context):
-    context.driver.find_element(By.XPATH, "//a[@data-test='@web/CartLink']").click()
-    sleep(2)
+#     context.driver.find_element(By.XPATH, "//a[@data-test='@web/CartLink']").click()
+    context.app.header.click_cart()
 
 
 @then('Verify that your cart is empty message is shown')

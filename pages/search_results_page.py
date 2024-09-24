@@ -6,5 +6,9 @@ class SearchResultsPage(Page):
     SEARCH_RESULTS_HEADER = (By.XPATH, "//div[@data-test='resultsHeading']")
 
     def verify_results(self, product):
-        actual_result = self.driver.find_element(*self.SEARCH_RESULTS_HEADER).text
-        assert product in actual_result, f'Expected {product} but got {actual_result}'
+        # actual_result = self.driver.find_element(*self.SEARCH_RESULTS_HEADER).text
+        # assert product in actual_result, f'Expected {product} but got {actual_result}'
+        self.verify_partial_text(product, *self.SEARCH_RESULTS_HEADER)
+
+    def verify_results_url(self, product):
+        self.verify_partial_url(product)
