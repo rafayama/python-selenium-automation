@@ -60,21 +60,35 @@ def verify_cart_empty(context):
     context.driver.find_element(By.XPATH, "//div[@data-test='boxEmptyMsg']")
 
 
-# lesson 3 homework exercise 3
-
 @when('Click Sign in')
 def click_sign_in(context):
-    context.driver.find_element(By.XPATH, "//a[@data-test='@web/AccountLink']").click()
+    # context.driver.find_element(By.XPATH, "//a[@data-test='@web/AccountLink']").click()
+    context.app.header.click_signin()
 
 
 @when('From right side navigation menu, click Sign In')
 def click_sign_in_sidebar(context):
-    context.driver.find_element(By.XPATH, "//a[@data-test='accountNav-signIn']").click()
+    # context.driver.find_element(By.XPATH, "//a[@data-test='accountNav-signIn']").click()
+    context.app.header.click_signin_sidebar()
 
+
+@when('Input email and password on SignIn page')
+def input_email_and_password(context):
+    context.app.signin_page.input_email_and_password()
+
+
+@when('Click Sign in with password')
+def click_sign_in_with_password(context):
+    context.app.signin_page.click_sign_in_with_password()
+
+@then('Verify that user is logged in')
+def verify_user_logged_in(context):
+    verify = context.app.signin_page.verify_user_logged_in()
+    verify == False
 
 @then('Verify Sign In form opened')
 def verify_sign_in_form(context):
-    context.driver.find_element(By.XPATH, "//h1//span[text()='Sign into your Target account']").click()
+    context.driver.find_element(By.XPATH, "//h1//span[text()='Sign into your Target account']")
     context.driver.find_element(By.XPATH, "//form")
 
 
@@ -112,19 +126,21 @@ def click_product(context):
 
 @when('Click on Add to Cart button')
 def click_add_to_cart(context):
-    context.driver.find_element(*ADD_TO_CART_BTN).click()
-    sleep(5)
+    # context.driver.find_element(*ADD_TO_CART_BTN).click()
+    # sleep(5)
     # Waits for target element to be loaded
     # context.driver.wait.until(EC.visibility_of_element_located(ADD_TO_CART_BTN))
+    context.app.cart_page.add_to_cart()
 
 
 @then('Verify that cart has items')
 def verify_item(context):
-    context.driver.get('https://www.target.com/cart')
-    # sleep(5)
-    cart_item = context.driver.find_elements(By.CSS_SELECTOR, "[data-test='cartItem']")
-    assert len(cart_item) > 0
-
+    # context.driver.get('https://www.target.com/cart')
+    # # sleep(5)
+    # cart_item = context.driver.find_elements(By.CSS_SELECTOR, "[data-test='cartItem']")
+    # assert len(cart_item) > 0
+    context.app.cart_page.open_cart_page()
+    context.app.cart_page.verify_cart_item()
 
 @then('Verify that Help Title is shown')
 def verify_help_title(context):

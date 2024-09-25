@@ -44,6 +44,11 @@ class Page:
             EC.invisibility_of_element_located(locator),
             message=f'Element by {locator} still visible')
 
+    def wait_for_element_to_not_load(self, *locator):
+        self.wait.until(
+            EC.invisibility_of_element(locator),
+            message=f'Element by {locator} is visible')
+
     def verify_text(self, expected_text, *locator):
         actual_text = self.find_element(*locator).text
         assert actual_text == expected_text, f'Expected {expected_text} but got {actual_text}'

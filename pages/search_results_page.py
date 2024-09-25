@@ -12,3 +12,4 @@ class SearchResultsPage(Page):
 
     def verify_results_url(self, product):
         self.verify_partial_url(product)
+
