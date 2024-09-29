@@ -76,15 +76,25 @@ def click_sign_in_sidebar(context):
 def input_email_and_password(context):
     context.app.signin_page.input_email_and_password()
 
+@when('Input wrong email and password on SignIn page')
+def input_email_and_password(context):
+    context.app.signin_page.input_wrong_email_and_password()
+
 
 @when('Click Sign in with password')
 def click_sign_in_with_password(context):
     context.app.signin_page.click_sign_in_with_password()
 
+
 @then('Verify that user is logged in')
 def verify_user_logged_in(context):
-    verify = context.app.signin_page.verify_user_logged_in()
-    verify == False
+    context.app.signin_page.verify_user_logged_in()
+
+
+@then('Verify that user is not logged in')
+def verify_user_logged_in(context):
+    context.app.signin_page.verify_user_not_logged_in()
+
 
 @then('Verify Sign In form opened')
 def verify_sign_in_form(context):

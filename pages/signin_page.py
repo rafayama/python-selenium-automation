@@ -7,8 +7,10 @@ class SigninPage(Page):
     SIGNIN_FORM = (By.XPATH, "//form")
     SIGNIN_EMAIL_FIELD = (By.ID, "username")
     SIGNIN_EMAIL = 'test@test.com'
+    SIGNIN_WRONG_EMAIL = 'test1@test.com'
     SIGNIN_PASSWORD_FIELD = (By.ID, "password")
     SIGNIN_PASSWORD = 'password'
+    SIGNIN_WRONG_PASSWORD = 'password1'
     SIGNIN_FORM_BUTTON = (By.ID, "login")
 
     def verify_signin_form(self, ):
@@ -17,8 +19,12 @@ class SigninPage(Page):
                          *self.SIGNIN_HEADER)
 
     def input_email_password(self):
-        self.input_text(*self.SIGNIN_EMAIL, *self.SIGNIN_EMAIL)
+        self.input_text(*self.SIGNIN_EMAIL, *self.SIGNIN_EMAIL_FIELD)
         self.input_text(*self.SIGNIN_PASSWORD, *self.SIGNIN_PASSWORD_FIELD)
+
+    def input_wrong_email_password(self):
+        self.input_text(*self.SIGNIN_WRONG_EMAIL, *self.SIGNIN_EMAIL_FIELD)
+        self.input_text(*self.SIGNIN_WRONG_PASSWORD, *self.SIGNIN_PASSWORD_FIELD)
 
     def click_signin_with_password(self):
         self.click(self.SIGNIN_FORM_BUTTON)
