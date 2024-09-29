@@ -12,6 +12,7 @@ class SigninPage(Page):
     SIGNIN_PASSWORD = 'password'
     SIGNIN_WRONG_PASSWORD = 'password1'
     SIGNIN_FORM_BUTTON = (By.ID, "login")
+    SIGNIN_ALERT = (By.XPATH, "//div[data-test='authAlertDisplay']")
 
     def verify_signin_form(self, ):
         self.verify_text(
@@ -33,3 +34,5 @@ class SigninPage(Page):
         self.verify_text('wait_for_element_to_not_load',
                          *self.SIGNIN_HEADER)
 
+    def verify_user_not_logged_in(self):
+        self.find_element(*self.SIGNIN_ALERT)
