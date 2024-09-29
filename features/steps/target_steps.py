@@ -191,7 +191,18 @@ def verify_result_name(context):
         print(title)
         result.find_element(*LISTING_PRODUCT_IMAGE)
 
+
 @then('Verify that "Your cart is empty" is shown')
 def verify_cart_empty(context):
     # context.driver.find_element(*EMPTY_CART_TEXT)
     context.app.cart_page.verify_empty()
+
+
+@when('Hover favorites icon')
+def hover_favorites(context):
+    context.app.search_results_page.hover_favorites()
+
+
+@then('Favorites tooltip is shown')
+def verify_favorites(context):
+    context.app.search_results_page.verify_favorites()

@@ -25,3 +25,9 @@ Feature: Tests for Target Search functionality
     Given Open target main page
     When Search for tea
     Then Verify that each result has a name and image
+
+  Scenario: User can see favorites tooltip for search results
+    Given Open Target main page
+    When Search for tea
+    And Hover favorites icon
+    Then Favorites tooltip is shown
